@@ -1,0 +1,9 @@
+function [H_addr] = AddressCRCGenerator(address)
+%ADDRESSCRCGENERATOR Summary of this function goes here
+%   Detailed explanation goes here
+
+H_addr = comm.CRCGenerator('polynomial',ones(1,15));
+ADDRCRC=step(H_addr,address);
+
+end
+
