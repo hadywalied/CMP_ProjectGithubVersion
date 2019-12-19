@@ -15,13 +15,17 @@ numberofzeros = 0 ;
      end
      
      if(numberofzeros == 6 )
-     inputStream = [inputStream(1:i),1,inputStream(i+1:n)];
+     inputStream = [inputStream(1:i); 1 ; inputStream(i+1:n)];
      numberofzeros = 0;
      end
     
  end
+%  x = mod(length(inputStream),1024);
+%  if x~=0
+%      inputStream= [inputStream; zeros(1,1024-x)'] ;
+%  end
 
- stuffed = reshape(inputStream,1024,[]);
+ stuffed = inputStream;
  
 end
 
