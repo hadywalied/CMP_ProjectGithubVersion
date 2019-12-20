@@ -8,27 +8,32 @@ address_matrix=repmat(address , 1,n);
 sync=[0 0 0 0 0 0 0 1]';
 sync_matrix=repmat(sync,1,n);
 pid = [];
-i = 0 ;
+i = 1 ;
 c = 0 ;
-while (i<n)
-    if (c < mod(n,16))
+x= mod(n,16)
+while (i<=n)
+    if (c < 16)
         pid = [pid; de2bi(c,4), de2bi(15-c,4)];
         c=c+1 ;
-    else c=0;
+    else
+        c=0;
+        n=n+1;
     end
     i=i+1;
 end
+n= length(dataFrame(1,:));
 pid = pid';
 z= abs(15-n);
 addd=AddressCRCGenerator(address);
-ad = addd(z:n);
+ad = addd(12:16);
 addr_CRCmat=repmat(ad,1,n);
 
 DataCRCmat=[];
 for c=1:n
     col=dataFrame(:,c);
     columnCRC=DataCRCGenerator(col);
-    dataCRCVector = columnCRC(z:n);
+    x=length(columnCRC);
+    dataCRCVector = columnCRC(1025:x);
     DataCRCmat=[DataCRCmat,dataCRCVector];
 end
 usbFrame=[sync_matrix;pid;address_matrix;dataFrame;addr_CRCmat;DataCRCmat]

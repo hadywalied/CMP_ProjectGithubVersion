@@ -145,28 +145,31 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 workspace = guidata(hObject);
 workspace.eff= 1;
-for i = 0:5
+for i = 1:6
     if i ~= 0
-        workspace.stream = [workspace.stream , workspace.stream];
+        workspace.Stream = repmat(workspace.stream,1,i);
+    else
+        workspace.Stream = workspace.stream;
     end
     if workspace.type== 0 %UART
-        workspace.Frame = UartFrameFormater(workspace.stream,workspace.parity ...
+        workspace.Frame = UartFrameFormater(workspace.Stream,workspace.parity ...
             ,workspace.stopBits,workspace.numBits);
         %stream= workspace.Frame(:);
         
     elseif workspace.type== 1 %USB
-        workspace.Frame = USBFrameFormater(workspace.stream);
+        workspace.Frame = USBFrameFormater(workspace.Stream);
         workspace.Frame = bitStuff(workspace.Frame);
         [workspace.Dplus,workspace.Dminus]= DLinesGenerator(workspace.Frame);
        % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
     else
         
     end
-    workspace.eff(i+1) = length(workspace.stream) /length(workspace.Frame);
+    workspace.eff(i) = length(workspace.stream) /length(workspace.Frame(:));
 end
-workspace.eff = length(workspace.stream) /length(workspace.Frame);
-handels.hObject = stairs(workspace.eff);
-legend(Efficiency)
+% workspace.eff = length(workspace.stream) /length(workspace.Frame);
+handels.hObject = plot(workspace.eff);
+legend('Efficiency');
+xlabel('X data size');
 handels.output = hObject;
 guidata(hObject, handles);
 guidata(hObject,workspace);
@@ -178,6 +181,36 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+workspace = guidata(hObject);
+workspace.overhead= 1;
+for i = 1:6
+    if i ~= 0
+        workspace.Stream = repmat(workspace.stream,1,i);
+    else
+        workspace.Stream = workspace.stream;
+    end
+    if workspace.type== 0 %UART
+        workspace.Frame = UartFrameFormater(workspace.Stream,workspace.parity ...
+            ,workspace.stopBits,workspace.numBits);
+        %stream= workspace.Frame(:);
+        
+    elseif workspace.type== 1 %USB
+        workspace.Frame = USBFrameFormater(workspace.Stream);
+        workspace.Frame = bitStuff(workspace.Frame);
+        [workspace.Dplus,workspace.Dminus]= DLinesGenerator(workspace.Frame);
+       % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
+    else
+        
+    end
+    workspace.overhead(i) = 1-(length(workspace.stream) /length(workspace.Frame(:)));
+end
+% workspace.eff = length(workspace.stream) /length(workspace.Frame);
+handels.hObject = plot(workspace.overhead);
+legend('%Overhead');
+xlabel('X data size');
+handels.output = hObject;
+guidata(hObject, handles);
+guidata(hObject,workspace);
 
 
 % --- Executes on button press in pushbutton4.
@@ -185,6 +218,37 @@ function pushbutton4_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+workspace = guidata(hObject);
+workspace.time= 1;
+for i = 1:6
+    if i ~= 0
+        workspace.Stream = repmat(workspace.stream,1,i);
+    else
+        workspace.Stream = workspace.stream;
+    end
+    if workspace.type== 0 %UART
+        workspace.Frame = UartFrameFormater(workspace.Stream,workspace.parity ...
+            ,workspace.stopBits,workspace.numBits);
+        %stream= workspace.Frame(:);
+        
+    elseif workspace.type== 1 %USB
+        workspace.Frame = USBFrameFormater(workspace.Stream);
+        workspace.Frame = bitStuff(workspace.Frame);
+        [workspace.Dplus,workspace.Dminus]= DLinesGenerator(workspace.Frame);
+       % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
+    else
+        
+    end
+    workspace.time(i) = length(workspace.Frame(:));
+end
+% workspace.eff = length(workspace.stream) /length(workspace.Frame);
+handels.hObject = plot(workspace.time);
+legend('Transmission Time');
+xlabel('X data size');
+ylabel('time');
+handels.output = hObject;
+guidata(hObject, handles);
+guidata(hObject,workspace);
 
 
 % --- Executes on selection change in popupmenu2.
