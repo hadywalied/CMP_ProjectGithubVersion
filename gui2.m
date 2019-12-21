@@ -198,7 +198,7 @@ for i = 1:6
     else
         
     end
-    workspace.overhead(i) = 1-(length(workspace.Stream) /length(workspace.Frame(:)));
+    workspace.overhead(i) =floor( 1-(length(workspace.Stream) /length(workspace.Frame(:))));
 end
 % workspace.eff = length(workspace.stream) /length(workspace.Frame);
 handels.hObject = plot(workspace.overhead);
