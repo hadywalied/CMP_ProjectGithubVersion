@@ -160,11 +160,12 @@ for i = 1:6
     else
         
     end
-    workspace.eff(i) = ceil(length(workspace.Stream) /length(workspace.Frame(:)));
+    workspace.eff(i) = length(workspace.Stream) /length(workspace.Frame(:));
 end
 % workspace.eff = length(workspace.stream) /length(workspace.Frame);
 handels.hObject = plot(workspace.eff);
 legend('Efficiency');
+ylim([0 1]);
 xlabel('X data size');
 handels.output = hObject;
 guidata(hObject, handles);
@@ -198,11 +199,12 @@ for i = 1:6
     else
         
     end
-    workspace.overhead(i) =floor( 1-(length(workspace.Stream) /length(workspace.Frame(:))));
+    workspace.overhead(i) = 1-(length(workspace.Stream) /length(workspace.Frame(:)));
 end
 % workspace.eff = length(workspace.stream) /length(workspace.Frame);
 handels.hObject = plot(workspace.overhead);
 legend('%Overhead');
+ylim([0 1]);
 xlabel('X data size');
 handels.output = hObject;
 guidata(hObject, handles);
