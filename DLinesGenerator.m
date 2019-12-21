@@ -1,7 +1,7 @@
-function [D_Plus,D_minus] = DLinesGenerator(stuffedFrame)
+function [D_Plus,D_minus] = DLinesGenerator(stuffed)
 %DPLUSGENERATOR Summary of this function goes here
 %   Detailed explanation goes here
-stuffedStream = stuffedFrame(:);
+stuffedStream = stuffed(:);
 n=length(stuffedStream);
 D_Plus = ones(1,n);
 for i = (2:n)

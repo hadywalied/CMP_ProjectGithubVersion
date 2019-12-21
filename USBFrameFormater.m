@@ -36,6 +36,6 @@ for c=1:n
     dataCRCVector = columnCRC(1025:x);
     DataCRCmat=[DataCRCmat,dataCRCVector];
 end
-usbFrame=[sync_matrix;pid;address_matrix;dataFrame;addr_CRCmat;DataCRCmat]
+usbFrame=[sync_matrix;pid;address_matrix;dataFrame;addr_CRCmat;DataCRCmat;0;0];
 end
 
