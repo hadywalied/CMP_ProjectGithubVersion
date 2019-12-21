@@ -27,11 +27,11 @@ function varargout = gui2(varargin)
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @gui2_OpeningFcn, ...
-                   'gui_OutputFcn',  @gui2_OutputFcn, ...
-                   'gui_LayoutFcn',  [] , ...
-                   'gui_Callback',   []);
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @gui2_OpeningFcn, ...
+    'gui_OutputFcn',  @gui2_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
     gui_State.gui_Callback = str2func(varargin{1});
 end
@@ -63,7 +63,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = gui2_OutputFcn(hObject, eventdata, handles) 
+function varargout = gui2_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -119,8 +119,8 @@ end
 %     case 'UART'
 %         workspace.type = 0 ;
 %     case 'USB'
-%         workspace.type = 1 ;    
-%end 
+%         workspace.type = 1 ;
+%end
 guidata(hObject,workspace);
 
 
@@ -146,11 +146,7 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 workspace = guidata(hObject);
 workspace.eff= 1;
 for i = 1:6
-    if i ~= 0
-        workspace.Stream = repmat(workspace.stream,1,i);
-    else
-        workspace.Stream = workspace.stream;
-    end
+    workspace.Stream = repmat(workspace.stream,1,i);
     if workspace.type== 0 %UART
         workspace.Frame = UartFrameFormater(workspace.Stream,workspace.parity ...
             ,workspace.stopBits,workspace.numBits);
@@ -160,11 +156,11 @@ for i = 1:6
         workspace.Frame = USBFrameFormater(workspace.Stream);
         workspace.Frame = bitStuff(workspace.Frame);
         [workspace.Dplus,workspace.Dminus]= DLinesGenerator(workspace.Frame);
-       % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
+        % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
     else
         
     end
-    workspace.eff(i) = length(workspace.stream) /length(workspace.Frame(:));
+    workspace.eff(i) = ceil(length(workspace.Stream) /length(workspace.Frame(:)));
 end
 % workspace.eff = length(workspace.stream) /length(workspace.Frame);
 handels.hObject = plot(workspace.eff);
@@ -198,11 +194,11 @@ for i = 1:6
         workspace.Frame = USBFrameFormater(workspace.Stream);
         workspace.Frame = bitStuff(workspace.Frame);
         [workspace.Dplus,workspace.Dminus]= DLinesGenerator(workspace.Frame);
-       % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
+        % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
     else
         
     end
-    workspace.overhead(i) = 1-(length(workspace.stream) /length(workspace.Frame(:)));
+    workspace.overhead(i) = 1-(length(workspace.Stream) /length(workspace.Frame(:)));
 end
 % workspace.eff = length(workspace.stream) /length(workspace.Frame);
 handels.hObject = plot(workspace.overhead);
@@ -235,7 +231,7 @@ for i = 1:6
         workspace.Frame = USBFrameFormater(workspace.Stream);
         workspace.Frame = bitStuff(workspace.Frame);
         [workspace.Dplus,workspace.Dminus]= DLinesGenerator(workspace.Frame);
-       % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
+        % stream = [workspace.Dplus(1:16) ; workspace.Dminus(1:16)]';
     else
         
     end
@@ -275,10 +271,10 @@ end
 %     case {'even'}
 %         workspace.partiy = 0 ;
 %     case {'odd'}
-%         workspace.partiy = 1 ;  
+%         workspace.partiy = 1 ;
 %     case {'non'}
-%         workspace.partiy = -1 ; 
-% end 
+%         workspace.partiy = -1 ;
+% end
 guidata(hObject,workspace);
 % --- Executes during object creation, after setting all properties.
 function popupmenu2_CreateFcn(hObject, eventdata, handles)
@@ -308,8 +304,8 @@ switch str{val}
     case {'7-bits'}
         workspace.numBits = 7 ;
     case {'8-bits'}
-        workspace.numBits = 8 ;    
-end 
+        workspace.numBits = 8 ;
+end
 guidata(hObject,workspace);
 
 % --- Executes during object creation, after setting all properties.
@@ -340,8 +336,8 @@ switch str{val}
     case '1'
         workspace.stopBits = 1 ;
     case '2'
-        workspace.stopBits = 2 ;    
-end 
+        workspace.stopBits = 2 ;
+end
 guidata(hObject,workspace);
 
 % --- Executes during object creation, after setting all properties.
